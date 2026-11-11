@@ -22,7 +22,12 @@ local function has_biome_config(_, ctx)
   return vim.fs.find({ "biome.json", "biome.jsonc" }, { path = ctx.dirname, upward = true })[1] ~= nil
 end
 
--- Biome first if the project uses it, otherwise Prettier.
+local function has_deno_config(_, ctx)
+  return vim.fs.find({ "deno.json", "deno.jsonc" }, { path = ctx.dirname, upward = true })[1] ~= nil
+end
+
+-- The first one the project is configured for wins: Deno, then Biome, then Prettier.
+local js = { "deno_fmt", "biome-check", "prettierd", stop_after_first = true }
 local biome_or_prettier = { "biome-check", "prettierd", stop_after_first = true }
 
 return {
@@ -54,12 +59,12 @@ return {
     end,
     opts = {
       formatters_by_ft = {
-        javascript = biome_or_prettier,
-        javascriptreact = biome_or_prettier,
-        typescript = biome_or_prettier,
-        typescriptreact = biome_or_prettier,
-        json = biome_or_prettier,
-        jsonc = biome_or_prettier,
+        javascript = js,
+        javascriptreact = js,
+        typescript = js,
+        typescriptreact = js,
+        json = js,
+        jsonc = js,
         css = biome_or_prettier,
         graphql = biome_or_prettier,
         scss = { "prettierd" },
@@ -67,12 +72,22 @@ return {
         html = { "prettierd" },
         yaml = { "prettierd" },
         markdown = { "prettierd" },
-        ["markdown.mdx"] = { "prettierd" },
+        mdx = { "prettierd" },
         lua = { "stylua" },
+        python = { "ruff_format" },
+        sh = { "shfmt" },
+        bash = { "shfmt" },
       },
       formatters = {
+        deno_fmt = {
+          condition = has_deno_config,
+          cwd = function(_, ctx)
+            return vim.fs.root(ctx.dirname, { "deno.json", "deno.jsonc" }) -- so deno finds its config
+          end,
+        },
         ["biome-check"] = { condition = has_biome_config },
         prettierd = { condition = has_prettier_config },
+        shfmt = { prepend_args = { "-i", "2", "-ci" } }, -- 2-space indent, indent case branches
       },
       format_on_save = function(buf)
         if vim.g.autoformat == false or vim.b[buf].autoformat == false then
@@ -92,6 +107,25 @@ return {
 
   {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
-    opts = { ensure_installed = { "biome", "prettierd", "stylua" } },
+    opts = { ensure_installed = { "biome", "prettierd", "stylua", "shfmt", "hadolint" } },
+  },
+
+  -- Linters that don't run as language servers. ESLint, Ruff and ShellCheck already come through LSP.
+  {
+    "mfussenegger/nvim-lint",
+    event = { "BufReadPost", "BufNewFile", "BufWritePost" },
+    config = function()
+      local lint = require("lint")
+      lint.linters_by_ft = {
+        dockerfile = { "hadolint" },
+      }
+      vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost", "InsertLeave" }, {
+        group = vim.api.nvim_create_augroup("user_lint", { clear = true }),
+        callback = function()
+          lint.try_lint()
+        end,
+      })
+      lint.try_lint()
+    end,
   },
 }

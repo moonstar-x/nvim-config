@@ -1,8 +1,35 @@
--- Servers to enable. Their settings come from nvim-lspconfig, plus our overrides in lsp/<name>.lua.
-local servers = { "vtsls", "eslint", "lua_ls" }
+-- Servers to enable, mapped to the Mason package that provides them (false = installed some other way).
+-- Their settings come from nvim-lspconfig, plus our overrides in after/lsp/<name>.lua (after/ so ours win).
+local servers = {
+  -- TypeScript / JavaScript
+  vtsls = "vtsls",
+  eslint = "eslint-lsp",
+  biome = "biome", -- only starts in projects with biome.json
+  denols = false, -- Homebrew's deno; only starts in projects with deno.json
+  -- Data and docs
+  jsonls = "json-lsp",
+  yamlls = "yaml-language-server",
+  graphql = "graphql-language-service-cli",
+  mdx_analyzer = "mdx-analyzer",
+  marksman = "marksman",
+  -- Infrastructure
+  dockerls = "dockerfile-language-server",
+  docker_compose_language_service = "docker-compose-language-service",
+  nginx_language_server = "nginx-language-server",
+  -- Other languages
+  basedpyright = "basedpyright",
+  ruff = "ruff",
+  bashls = "bash-language-server",
+  lua_ls = "lua-language-server",
+  typos_lsp = "typos-lsp",
+}
 
--- Mason package names for the servers above (and later, formatters and linters).
-local tools = { "vtsls", "eslint-lsp", "lua-language-server" }
+local tools = { "shellcheck" } -- bashls runs shellcheck for its diagnostics
+for _, pkg in pairs(servers) do
+  if pkg then
+    table.insert(tools, pkg)
+  end
+end
 
 return {
   {
@@ -59,7 +86,7 @@ return {
         end,
       })
 
-      vim.lsp.enable(servers)
+      vim.lsp.enable(vim.tbl_keys(servers))
     end,
   },
 
@@ -72,6 +99,13 @@ return {
         { path = "snacks.nvim", words = { "Snacks" } },
       },
     },
+  },
+
+  -- JSON/YAML schemas for jsonls and yamlls (see after/lsp/jsonls.lua and after/lsp/yamlls.lua).
+  {
+    "b0o/SchemaStore.nvim",
+    lazy = true,
+    version = false,
   },
 
   {
