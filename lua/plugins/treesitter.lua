@@ -36,29 +36,13 @@ return {
     branch = "main",
     event = { "BufReadPost", "BufNewFile" },
     opts = {
-      select = { lookahead = true },
       move = { set_jumps = true },
     },
     config = function(_, opts)
       require("nvim-treesitter-textobjects").setup(opts)
 
-      local select = require("nvim-treesitter-textobjects.select")
+      -- Selecting (af, ic, ...) is done by mini.ai in editor.lua, using these same queries.
       local move = require("nvim-treesitter-textobjects.move")
-
-      local objects = {
-        f = { "@function", "function" },
-        c = { "@class", "class" },
-        a = { "@parameter", "argument" },
-      }
-      for key, obj in pairs(objects) do
-        local query, name = obj[1], obj[2]
-        vim.keymap.set({ "x", "o" }, "a" .. key, function()
-          select.select_textobject(query .. ".outer", "textobjects")
-        end, { desc = "around " .. name })
-        vim.keymap.set({ "x", "o" }, "i" .. key, function()
-          select.select_textobject(query .. ".inner", "textobjects")
-        end, { desc = "inside " .. name })
-      end
 
       -- ]f/[f and ]k/[k: next/previous function and class (]c is left for git hunks).
       local moves = { f = { "@function.outer", "function" }, k = { "@class.outer", "class" } }
