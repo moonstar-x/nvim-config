@@ -19,9 +19,27 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
     opts = {},
     keys = {
-      { "]t", function() require("todo-comments").jump_next() end, desc = "Next TODO" },
-      { "[t", function() require("todo-comments").jump_prev() end, desc = "Previous TODO" },
-      { "<leader>st", function() Snacks.picker.todo_comments() end, desc = "TODOs" },
+      {
+        "]t",
+        function()
+          require("todo-comments").jump_next()
+        end,
+        desc = "Next TODO",
+      },
+      {
+        "[t",
+        function()
+          require("todo-comments").jump_prev()
+        end,
+        desc = "Previous TODO",
+      },
+      {
+        "<leader>st",
+        function()
+          Snacks.picker.todo_comments()
+        end,
+        desc = "TODOs",
+      },
       { "<leader>xt", "<cmd>Trouble todo toggle<cr>", desc = "TODOs (Trouble)" },
     },
   },
@@ -118,11 +136,46 @@ return {
     event = "VeryLazy",
     opts = {},
     keys = {
-      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash jump" },
-      { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash select (Treesitter)" },
-      { "r", mode = "o", function() require("flash").remote() end, desc = "Remote flash" },
-      { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter search" },
-      { "<c-s>", mode = "c", function() require("flash").toggle() end, desc = "Toggle flash in / search" },
+      {
+        "s",
+        mode = { "n", "x", "o" },
+        function()
+          require("flash").jump()
+        end,
+        desc = "Flash jump",
+      },
+      {
+        "S",
+        mode = { "n", "x", "o" },
+        function()
+          require("flash").treesitter()
+        end,
+        desc = "Flash select (Treesitter)",
+      },
+      {
+        "r",
+        mode = "o",
+        function()
+          require("flash").remote()
+        end,
+        desc = "Remote flash",
+      },
+      {
+        "R",
+        mode = { "o", "x" },
+        function()
+          require("flash").treesitter_search()
+        end,
+        desc = "Treesitter search",
+      },
+      {
+        "<c-s>",
+        mode = "c",
+        function()
+          require("flash").toggle()
+        end,
+        desc = "Toggle flash in / search",
+      },
     },
   },
 
@@ -161,7 +214,13 @@ return {
     end,
     keys = function()
       local keys = {
-        { "<leader>H", function() require("harpoon"):list():add() end, desc = "Harpoon this file" },
+        {
+          "<leader>H",
+          function()
+            require("harpoon"):list():add()
+          end,
+          desc = "Harpoon this file",
+        },
         {
           "<leader>h",
           function()
@@ -174,7 +233,9 @@ return {
       for i = 1, 5 do
         table.insert(keys, {
           "<leader>" .. i,
-          function() require("harpoon"):list():select(i) end,
+          function()
+            require("harpoon"):list():select(i)
+          end,
           desc = "Harpoon file " .. i,
         })
       end

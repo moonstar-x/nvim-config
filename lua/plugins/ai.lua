@@ -30,15 +30,73 @@ return {
       nes = { enabled = false }, -- next-edit suggestions need GitHub Copilot
     },
     keys = {
-      { "<c-.>", function() require("sidekick.cli").toggle() end, mode = { "n", "t", "i", "x" }, desc = "Toggle AI CLI" },
-      { "<leader>aa", function() require("sidekick.cli").toggle() end, desc = "Toggle AI CLI" },
-      { "<leader>as", function() require("sidekick.cli").select() end, desc = "Select AI CLI" },
-      { "<leader>ax", function() require("sidekick.cli").toggle({ name = "codex", focus = true }) end, desc = "Codex" },
-      { "<leader>ad", function() require("sidekick.cli").close() end, desc = "Detach CLI session" },
-      { "<leader>at", function() require("sidekick.cli").send({ msg = "{this}" }) end, mode = { "n", "x" }, desc = "Send this" },
-      { "<leader>af", function() require("sidekick.cli").send({ msg = "{file}" }) end, desc = "Send file" },
-      { "<leader>av", function() require("sidekick.cli").send({ msg = "{selection}" }) end, mode = "x", desc = "Send selection" },
-      { "<leader>ap", function() require("sidekick.cli").prompt() end, mode = { "n", "x" }, desc = "Pick a prompt" },
+      {
+        "<c-.>",
+        function()
+          require("sidekick.cli").toggle()
+        end,
+        mode = { "n", "t", "i", "x" },
+        desc = "Toggle AI CLI",
+      },
+      {
+        "<leader>aa",
+        function()
+          require("sidekick.cli").toggle()
+        end,
+        desc = "Toggle AI CLI",
+      },
+      {
+        "<leader>as",
+        function()
+          require("sidekick.cli").select()
+        end,
+        desc = "Select AI CLI",
+      },
+      {
+        "<leader>ax",
+        function()
+          require("sidekick.cli").toggle({ name = "codex", focus = true })
+        end,
+        desc = "Codex",
+      },
+      {
+        "<leader>ad",
+        function()
+          require("sidekick.cli").close()
+        end,
+        desc = "Detach CLI session",
+      },
+      {
+        "<leader>at",
+        function()
+          require("sidekick.cli").send({ msg = "{this}" })
+        end,
+        mode = { "n", "x" },
+        desc = "Send this",
+      },
+      {
+        "<leader>af",
+        function()
+          require("sidekick.cli").send({ msg = "{file}" })
+        end,
+        desc = "Send file",
+      },
+      {
+        "<leader>av",
+        function()
+          require("sidekick.cli").send({ msg = "{selection}" })
+        end,
+        mode = "x",
+        desc = "Send selection",
+      },
+      {
+        "<leader>ap",
+        function()
+          require("sidekick.cli").prompt()
+        end,
+        mode = { "n", "x" },
+        desc = "Pick a prompt",
+      },
     },
   },
 

@@ -24,8 +24,12 @@ return {
             gs.nav_hunk("prev")
           end
         end, "Previous hunk")
-        map("n", "]C", function() gs.nav_hunk("last") end, "Last hunk")
-        map("n", "[C", function() gs.nav_hunk("first") end, "First hunk")
+        map("n", "]C", function()
+          gs.nav_hunk("last")
+        end, "Last hunk")
+        map("n", "[C", function()
+          gs.nav_hunk("first")
+        end, "First hunk")
 
         -- Hunk actions. In visual mode they apply to the selected lines only.
         map({ "n", "x" }, "<leader>ghs", ":Gitsigns stage_hunk<CR>", "Stage / unstage hunk")
@@ -33,7 +37,9 @@ return {
         map("n", "<leader>ghS", gs.stage_buffer, "Stage buffer")
         map("n", "<leader>ghR", gs.reset_buffer, "Reset buffer")
         map("n", "<leader>ghp", gs.preview_hunk_inline, "Preview hunk")
-        map("n", "<leader>ghb", function() gs.blame_line({ full = true }) end, "Blame line")
+        map("n", "<leader>ghb", function()
+          gs.blame_line({ full = true })
+        end, "Blame line")
         map("n", "<leader>ghB", gs.blame, "Blame buffer")
         map("n", "<leader>ghd", gs.diffthis, "Diff against index")
         map("n", "<leader>ub", gs.toggle_current_line_blame, "Toggle inline blame")
@@ -57,12 +63,49 @@ return {
   {
     "folke/snacks.nvim",
     keys = {
-      { "<leader>gg", function() Snacks.lazygit() end, desc = "Lazygit" },
-      { "<leader>gs", function() Snacks.picker.git_status() end, desc = "Git status" },
-      { "<leader>gl", function() Snacks.picker.git_log() end, desc = "Git log" },
-      { "<leader>gL", function() Snacks.picker.git_log_file() end, desc = "Git log (this file)" },
-      { "<leader>gb", function() Snacks.picker.git_branches() end, desc = "Branches" },
-      { "<leader>gB", function() Snacks.gitbrowse() end, mode = { "n", "x" }, desc = "Open on GitHub" },
+      {
+        "<leader>gg",
+        function()
+          Snacks.lazygit()
+        end,
+        desc = "Lazygit",
+      },
+      {
+        "<leader>gs",
+        function()
+          Snacks.picker.git_status()
+        end,
+        desc = "Git status",
+      },
+      {
+        "<leader>gl",
+        function()
+          Snacks.picker.git_log()
+        end,
+        desc = "Git log",
+      },
+      {
+        "<leader>gL",
+        function()
+          Snacks.picker.git_log_file()
+        end,
+        desc = "Git log (this file)",
+      },
+      {
+        "<leader>gb",
+        function()
+          Snacks.picker.git_branches()
+        end,
+        desc = "Branches",
+      },
+      {
+        "<leader>gB",
+        function()
+          Snacks.gitbrowse()
+        end,
+        mode = { "n", "x" },
+        desc = "Open on GitHub",
+      },
     },
   },
 

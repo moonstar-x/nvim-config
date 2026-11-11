@@ -1,8 +1,22 @@
 local prettier_configs = {
-  ".prettierrc", ".prettierrc.json", ".prettierrc.json5", ".prettierrc.yaml", ".prettierrc.yml",
-  ".prettierrc.toml", ".prettierrc.js", ".prettierrc.cjs", ".prettierrc.mjs", ".prettierrc.ts",
-  ".prettierrc.cts", ".prettierrc.mts", "prettier.config.js", "prettier.config.cjs",
-  "prettier.config.mjs", "prettier.config.ts", "prettier.config.cts", "prettier.config.mts",
+  ".prettierrc",
+  ".prettierrc.json",
+  ".prettierrc.json5",
+  ".prettierrc.yaml",
+  ".prettierrc.yml",
+  ".prettierrc.toml",
+  ".prettierrc.js",
+  ".prettierrc.cjs",
+  ".prettierrc.mjs",
+  ".prettierrc.ts",
+  ".prettierrc.cts",
+  ".prettierrc.mts",
+  "prettier.config.js",
+  "prettier.config.cjs",
+  "prettier.config.mjs",
+  "prettier.config.ts",
+  "prettier.config.cts",
+  "prettier.config.mts",
 }
 
 -- Prettier only runs in projects that opted in: a Prettier config file, or a "prettier" key in package.json.
@@ -36,7 +50,14 @@ return {
     event = "BufWritePre",
     cmd = "ConformInfo",
     keys = {
-      { "<leader>cf", function() require("conform").format() end, mode = { "n", "x" }, desc = "Format" },
+      {
+        "<leader>cf",
+        function()
+          require("conform").format()
+        end,
+        mode = { "n", "x" },
+        desc = "Format",
+      },
       {
         "<leader>uf",
         function()

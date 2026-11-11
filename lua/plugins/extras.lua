@@ -66,7 +66,13 @@ return {
     event = { "BufReadPost", "BufNewFile" },
     opts = { max_lines = 3, mode = "cursor" },
     keys = {
-      { "<leader>ux", function() require("treesitter-context").toggle() end, desc = "Toggle sticky context" },
+      {
+        "<leader>ux",
+        function()
+          require("treesitter-context").toggle()
+        end,
+        desc = "Toggle sticky context",
+      },
     },
   },
 
@@ -86,8 +92,20 @@ return {
       }
     end,
     keys = {
-      { "<leader>um", function() require("mini.map").toggle() end, desc = "Toggle minimap" },
-      { "<leader>uM", function() require("mini.map").toggle_focus() end, desc = "Focus minimap" },
+      {
+        "<leader>um",
+        function()
+          require("mini.map").toggle()
+        end,
+        desc = "Toggle minimap",
+      },
+      {
+        "<leader>uM",
+        function()
+          require("mini.map").toggle_focus()
+        end,
+        desc = "Focus minimap",
+      },
     },
   },
 }

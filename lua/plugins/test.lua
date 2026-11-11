@@ -52,22 +52,90 @@ return {
       }
     end,
     keys = {
-      { "<leader>tr", function() require("neotest").run.run() end, desc = "Run nearest test" },
-      { "<leader>tt", function() require("neotest").run.run(vim.fn.expand("%")) end, desc = "Run file" },
-      { "<leader>tT", function() require("neotest").run.run(vim.uv.cwd()) end, desc = "Run all tests" },
-      { "<leader>tl", function() require("neotest").run.run_last() end, desc = "Run last" },
-      { "<leader>td", function() require("neotest").run.run({ strategy = "dap" }) end, desc = "Debug nearest test" },
-      { "<leader>tw", function() require("neotest").watch.toggle(vim.fn.expand("%")) end, desc = "Watch file" },
-      { "<leader>tS", function() require("neotest").run.stop() end, desc = "Stop" },
-      { "<leader>ts", function() require("neotest").summary.toggle() end, desc = "Summary panel" },
+      {
+        "<leader>tr",
+        function()
+          require("neotest").run.run()
+        end,
+        desc = "Run nearest test",
+      },
+      {
+        "<leader>tt",
+        function()
+          require("neotest").run.run(vim.fn.expand("%"))
+        end,
+        desc = "Run file",
+      },
+      {
+        "<leader>tT",
+        function()
+          require("neotest").run.run(vim.uv.cwd())
+        end,
+        desc = "Run all tests",
+      },
+      {
+        "<leader>tl",
+        function()
+          require("neotest").run.run_last()
+        end,
+        desc = "Run last",
+      },
+      {
+        "<leader>td",
+        function()
+          require("neotest").run.run({ strategy = "dap" })
+        end,
+        desc = "Debug nearest test",
+      },
+      {
+        "<leader>tw",
+        function()
+          require("neotest").watch.toggle(vim.fn.expand("%"))
+        end,
+        desc = "Watch file",
+      },
+      {
+        "<leader>tS",
+        function()
+          require("neotest").run.stop()
+        end,
+        desc = "Stop",
+      },
+      {
+        "<leader>ts",
+        function()
+          require("neotest").summary.toggle()
+        end,
+        desc = "Summary panel",
+      },
       {
         "<leader>to",
-        function() require("neotest").output.open({ enter = true, auto_close = true }) end,
+        function()
+          require("neotest").output.open({ enter = true, auto_close = true })
+        end,
         desc = "Test output",
       },
-      { "<leader>tO", function() require("neotest").output_panel.toggle() end, desc = "Output panel" },
-      { "]T", function() require("neotest").jump.next({ status = "failed" }) end, desc = "Next failed test" },
-      { "[T", function() require("neotest").jump.prev({ status = "failed" }) end, desc = "Previous failed test" },
+      {
+        "<leader>tO",
+        function()
+          require("neotest").output_panel.toggle()
+        end,
+        desc = "Output panel",
+      },
+      {
+        "]T",
+        function()
+          require("neotest").jump.next({ status = "failed" })
+        end,
+        desc = "Next failed test",
+      },
+      {
+        "[T",
+        function()
+          require("neotest").jump.prev({ status = "failed" })
+        end,
+        desc = "Previous failed test",
+      },
     },
   },
 
