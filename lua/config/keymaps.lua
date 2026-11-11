@@ -1,5 +1,3 @@
--- General keymaps. Plugin-specific keymaps live with their plugin spec in lua/plugins/.
-
 local map = vim.keymap.set
 
 -- Clear search highlighting with <Esc>.

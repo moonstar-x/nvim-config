@@ -1,6 +1,3 @@
--- lazy.nvim: plugin manager. https://lazy.folke.io
-
--- Install lazy.nvim on first launch by cloning its stable branch.
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.uv.fs_stat(lazypath) then
   local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -22,7 +19,7 @@ require("lazy").setup({
   spec = { { import = "plugins" } },
 
   -- Colorscheme to use while installing plugins on a fresh machine.
-  install = { colorscheme = { "habamax" } },
+  install = { colorscheme = { "catppuccin", "habamax" } },
 
   -- Check for plugin updates in the background, without a popup each time.
   checker = { enabled = true, notify = false },
@@ -30,8 +27,7 @@ require("lazy").setup({
   -- Don't announce every config file change.
   change_detection = { notify = false },
 
-  -- No plugin in this config needs LuaRocks, so skip it (and its health warning).
-  rocks = { enabled = false },
+  rocks = { enabled = true },
 
   performance = {
     rtp = {

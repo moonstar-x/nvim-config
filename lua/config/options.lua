@@ -1,5 +1,3 @@
--- Editor options. See `:help option-list` for everything available.
-
 -- Leader keys: <Space> for global mappings, "\" for filetype-local ones.
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
