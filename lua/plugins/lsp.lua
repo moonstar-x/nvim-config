@@ -15,6 +15,7 @@ return {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
     dependencies = { "mason-org/mason.nvim" },
     lazy = false, -- installs anything missing at startup
+    opts_extend = { "ensure_installed" }, -- other plugin files add their own tools
     opts = { ensure_installed = tools },
   },
 
