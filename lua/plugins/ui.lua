@@ -6,6 +6,15 @@ return {
     priority = 1000,
     opts = {
       flavour = "macchiato",
+      custom_highlights = function(colors)
+        local darken = require("catppuccin.utils.colors").darken
+        local rainbow = { colors.red, colors.peach, colors.yellow, colors.green, colors.sapphire, colors.mauve }
+        local groups = {}
+        for i, color in ipairs(rainbow) do
+          groups["SnacksIndent" .. i] = { fg = darken(color, 0.35, colors.base) }
+        end
+        return groups
+      end,
     },
     config = function(_, opts)
       require("catppuccin").setup(opts)
@@ -44,5 +53,51 @@ return {
         desc = "Keymaps for this buffer",
       },
     },
+  },
+
+  {
+    "nvim-lualine/lualine.nvim",
+    event = "VeryLazy",
+    init = function()
+      vim.o.showmode = false
+    end,
+    opts = {
+      options = {
+        theme = "catppuccin-nvim",
+        globalstatus = true,
+        component_separators = "",
+        section_separators = { left = "", right = "" },
+      },
+      sections = {
+        lualine_a = { "mode" },
+        lualine_b = { "branch", "diff" },
+        lualine_c = { "diagnostics", { "filename", path = 1 } },
+        lualine_x = {
+          {
+            function()
+              local names = {}
+              for _, client in ipairs(vim.lsp.get_clients({ bufnr = 0 })) do
+                if client.name ~= "typos_lsp" then
+                  table.insert(names, client.name)
+                end
+              end
+              return " " .. table.concat(names, " ")
+            end,
+            cond = function()
+              return #vim.lsp.get_clients({ bufnr = 0 }) > 0
+            end,
+          },
+          "filetype",
+        },
+        lualine_y = { "progress" },
+        lualine_z = { "location" },
+      },
+      extensions = { "lazy", "mason", "oil", "trouble" },
+    },
+  },
+
+  {
+    "HiPhish/rainbow-delimiters.nvim",
+    event = { "BufReadPost", "BufNewFile" },
   },
 }

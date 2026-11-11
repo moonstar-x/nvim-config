@@ -8,7 +8,12 @@ return {
       explorer = { enabled = true, replace_netrw = false },
       notifier = { enabled = true },
       input = { enabled = true },
-      indent = { enabled = true },
+      indent = {
+        enabled = true,
+        indent = {
+          hl = { "SnacksIndent1", "SnacksIndent2", "SnacksIndent3", "SnacksIndent4", "SnacksIndent5", "SnacksIndent6" },
+        },
+      },
       bigfile = { enabled = true },
       quickfile = { enabled = true },
     },
