@@ -14,6 +14,7 @@ return {
           hl = { "SnacksIndent1", "SnacksIndent2", "SnacksIndent3", "SnacksIndent4", "SnacksIndent5", "SnacksIndent6" },
         },
       },
+      statuscolumn = { enabled = true }, -- diagnostics/marks on the left, git signs and folds on the right
       bigfile = { enabled = true },
       quickfile = { enabled = true },
     },

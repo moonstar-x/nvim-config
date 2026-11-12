@@ -96,6 +96,12 @@ return {
           map("<leader>uh", function()
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = args.buf }), { bufnr = args.buf })
           end, "Toggle inlay hints")
+
+          -- Inlay hints on by default; which ones show is set per server in after/lsp/.
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          if client and client:supports_method("textDocument/inlayHint", args.buf) then
+            vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
+          end
         end,
       })
 

@@ -12,6 +12,7 @@ local parsers = {
   "markdown_inline",
   "html",
   "css",
+  "scss",
   "graphql",
   "nginx",
   "dockerfile",
@@ -35,15 +36,52 @@ return {
     lazy = false,
     build = ":TSUpdate",
     config = function()
-      require("nvim-treesitter").install(parsers)
+      local ts = require("nvim-treesitter")
+
+      -- Install tasks by language, so each parser is only installed once.
+      local installing = {}
+      local ensure = ts.install(parsers)
+      for _, lang in ipairs(parsers) do
+        installing[lang] = ensure
+      end
+
+      -- Parsers outside the list above are installed the first time a file needs them
+      -- (stable and unstable tiers only; unmaintained ones are skipped).
+      local available = {}
+      for _, tier in ipairs({ 1, 2 }) do
+        for _, lang in ipairs(ts.get_available(tier)) do
+          available[lang] = true
+        end
+      end
+
+      local function start(buf)
+        if pcall(vim.treesitter.start, buf) then
+          vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        end
+      end
 
       -- The main branch doesn't enable anything by itself: start highlighting
       -- and indentation for every buffer that has a parser.
       vim.api.nvim_create_autocmd("FileType", {
         group = vim.api.nvim_create_augroup("user_treesitter", { clear = true }),
         callback = function(args)
-          if pcall(vim.treesitter.start, args.buf) then
-            vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+          local buf = args.buf
+          local lang = vim.treesitter.language.get_lang(args.match)
+          if not lang then
+            return
+          end
+          if vim.treesitter.language.add(lang) then
+            return start(buf)
+          end
+          if not installing[lang] and available[lang] then
+            installing[lang] = ts.install(lang)
+          end
+          if installing[lang] then
+            installing[lang]:await(vim.schedule_wrap(function()
+              if vim.api.nvim_buf_is_valid(buf) then
+                start(buf)
+              end
+            end))
           end
         end,
       })

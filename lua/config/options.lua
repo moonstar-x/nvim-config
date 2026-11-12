@@ -28,9 +28,19 @@ opt.wrap = false -- don't soft-wrap long lines
 opt.splitright = true -- vertical splits open to the right
 opt.splitbelow = true -- horizontal splits open below
 opt.confirm = true -- ask to save instead of failing on :q with unsaved changes
+opt.winborder = "rounded" -- borders on every floating window (hover, signature, diagnostics, ...)
+
+-- Folding: by Treesitter syntax, all folds open when a file is opened.
+opt.foldmethod = "expr"
+opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+opt.foldlevel = 99
+opt.foldtext = "" -- show the folded line itself, with its highlighting
 
 -- Behaviour
-opt.clipboard = "unnamedplus" -- share the macOS system clipboard
+-- Share the macOS system clipboard. Deferred: finding the clipboard provider slows startup by ~30ms.
+vim.schedule(function()
+  opt.clipboard = "unnamedplus"
+end)
 opt.undofile = true -- keep undo history after closing a file
 opt.updatetime = 250 -- faster CursorHold events (used by LSP/gitsigns later)
 opt.timeoutlen = 300 -- how long to wait for a mapped key sequence

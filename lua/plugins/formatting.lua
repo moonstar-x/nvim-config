@@ -53,7 +53,7 @@ return {
       {
         "<leader>cf",
         function()
-          require("conform").format()
+          require("conform").format({ lsp_format = "fallback" }) -- the language server formats if no formatter applies
         end,
         mode = { "n", "x" },
         desc = "Format",

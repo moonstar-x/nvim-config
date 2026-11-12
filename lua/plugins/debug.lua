@@ -162,6 +162,7 @@ return {
 
   {
     "rcarriga/nvim-dap-ui",
+    lazy = true,
     dependencies = { "nvim-neotest/nvim-nio" },
     opts = {},
     config = function(_, opts)
@@ -182,6 +183,7 @@ return {
 
   {
     "theHamsta/nvim-dap-virtual-text",
+    lazy = true,
     opts = {},
   },
 
