@@ -6,6 +6,9 @@ local servers = {
   eslint = "eslint-lsp",
   biome = "biome", -- only starts in projects with biome.json
   denols = false, -- Homebrew's deno; only starts in projects with deno.json
+  -- Web
+  html = "html-lsp", -- also covers .mjml (treated as HTML)
+  cssls = "css-lsp", -- CSS, SCSS, Less
   -- Data and docs
   jsonls = "json-lsp",
   yamlls = "yaml-language-server",

@@ -134,6 +134,23 @@ return {
         end,
         desc = "File explorer",
       },
+      -- Terminal (some terminals send <C-_> for <C-/>)
+      {
+        "<c-/>",
+        function()
+          Snacks.terminal.toggle(nil, { win = { position = "float", border = "rounded" } })
+        end,
+        mode = { "n", "t" },
+        desc = "Floating terminal",
+      },
+      {
+        "<c-_>",
+        function()
+          Snacks.terminal.toggle(nil, { win = { position = "float", border = "rounded" } })
+        end,
+        mode = { "n", "t" },
+        desc = "which_key_ignore",
+      },
     },
   },
 
