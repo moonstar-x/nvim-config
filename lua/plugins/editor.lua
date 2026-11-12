@@ -243,11 +243,50 @@ return {
     end,
   },
 
+  -- Saves a session per directory (and git branch) on exit. Nothing restores automatically:
+  -- use the dashboard's "Restore Session" or the keys below.
+  {
+    "folke/persistence.nvim",
+    event = "BufReadPre",
+    opts = {},
+    keys = {
+      {
+        "<leader>qs",
+        function()
+          require("persistence").load()
+        end,
+        desc = "Restore session (this directory)",
+      },
+      {
+        "<leader>qS",
+        function()
+          require("persistence").select()
+        end,
+        desc = "Pick a session",
+      },
+      {
+        "<leader>ql",
+        function()
+          require("persistence").load({ last = true })
+        end,
+        desc = "Restore last session",
+      },
+      {
+        "<leader>qd",
+        function()
+          require("persistence").stop()
+        end,
+        desc = "Don't save this session",
+      },
+    },
+  },
+
   {
     "folke/which-key.nvim",
     opts_extend = { "spec" },
     opts = {
       spec = {
+        { "<leader>q", group = "session" },
         { "<leader>x", group = "diagnostics/lists" },
         { "gs", group = "surround", mode = { "n", "x" } },
       },

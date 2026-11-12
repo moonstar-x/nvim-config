@@ -47,6 +47,39 @@ return {
     lazy = false, -- it hooks FileType itself, so loading it on FileType would miss the first file
   },
 
+  -- Latest version of each dependency, shown at the end of its line in package.json.
+  -- Uses the package manager whose lock file it finds (npm, yarn, pnpm, bun).
+  {
+    "vuki656/package-info.nvim",
+    dependencies = { "MunifTanjim/nui.nvim" },
+    event = "BufReadPost package.json", -- before BufEnter, which is when it shows the versions
+    opts = {
+      highlights = {
+        up_to_date = { link = "Comment" },
+        outdated = { link = "DiagnosticWarn" },
+        invalid = { link = "DiagnosticError" },
+      },
+      hide_up_to_date = true,
+    },
+    config = function(_, opts)
+      require("package-info").setup(opts)
+      vim.api.nvim_create_autocmd("BufEnter", {
+        group = vim.api.nvim_create_augroup("user_package_info", { clear = true }),
+        pattern = "package.json",
+        callback = function(args)
+          local function map(lhs, cmd, desc)
+            vim.keymap.set("n", lhs, "<cmd>PackageInfo" .. cmd .. "<cr>", { buffer = args.buf, desc = desc })
+          end
+          map("<leader>pt", "Toggle", "Toggle latest versions")
+          map("<leader>pu", "Update", "Update this package")
+          map("<leader>pd", "Delete", "Delete this package")
+          map("<leader>pi", "Install", "Install a package")
+          map("<leader>pv", "ChangeVersion", "Change version")
+        end,
+      })
+    end,
+  },
+
   -- Headings, lists, code blocks, tables and checkboxes rendered inside Markdown buffers.
   {
     "MeanderingProgrammer/render-markdown.nvim",
@@ -65,15 +98,23 @@ return {
     "nvim-treesitter/nvim-treesitter-context",
     event = { "BufReadPost", "BufNewFile" },
     opts = { max_lines = 3, mode = "cursor" },
-    keys = {
-      {
-        "<leader>ux",
-        function()
-          require("treesitter-context").toggle()
-        end,
-        desc = "Toggle sticky context",
-      },
-    },
+    config = function(_, opts)
+      local context = require("treesitter-context")
+      context.setup(opts)
+      Snacks.toggle
+        .new({
+          name = "Sticky context",
+          get = context.enabled,
+          set = function(state)
+            if state then
+              context.enable()
+            else
+              context.disable()
+            end
+          end,
+        })
+        :map("<leader>ux")
+    end,
   },
 
   -- Minimap with search, diagnostics and git changes marked. Off until toggled.
@@ -105,6 +146,16 @@ return {
           require("mini.map").toggle_focus()
         end,
         desc = "Focus minimap",
+      },
+    },
+  },
+
+  {
+    "folke/which-key.nvim",
+    opts_extend = { "spec" },
+    opts = {
+      spec = {
+        { "<leader>p", group = "packages (package.json)" },
       },
     },
   },

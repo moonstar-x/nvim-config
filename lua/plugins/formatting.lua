@@ -58,22 +58,6 @@ return {
         mode = { "n", "x" },
         desc = "Format",
       },
-      {
-        "<leader>uf",
-        function()
-          vim.g.autoformat = vim.g.autoformat == false
-          vim.notify("Format on save " .. (vim.g.autoformat and "enabled" or "disabled"))
-        end,
-        desc = "Toggle format on save",
-      },
-      {
-        "<leader>uF",
-        function()
-          vim.b.autoformat = vim.b.autoformat == false
-          vim.notify("Format on save " .. (vim.b.autoformat and "enabled" or "disabled") .. " for this buffer")
-        end,
-        desc = "Toggle format on save (buffer)",
-      },
     },
     init = function()
       vim.o.formatexpr = "v:lua.require'conform'.formatexpr()" -- gq uses conform too
@@ -95,7 +79,7 @@ return {
         markdown = { "prettierd" },
         mdx = { "prettierd" },
         lua = { "stylua" },
-        python = { "ruff_format" },
+        python = { "ruff_organize_imports", "ruff_format" },
         sh = { "shfmt" },
         bash = { "shfmt" },
       },
@@ -110,6 +94,7 @@ return {
         prettierd = { condition = has_prettier_config },
         shfmt = { prepend_args = { "-i", "2", "-ci" } }, -- 2-space indent, indent case branches
       },
+      -- vim.g.autoformat / vim.b.autoformat are toggled with <leader>uf / <leader>uF (lua/config/keymaps.lua).
       format_on_save = function(buf)
         if vim.g.autoformat == false or vim.b[buf].autoformat == false then
           return
@@ -129,7 +114,7 @@ return {
   {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
     opts_extend = { "ensure_installed" },
-    opts = { ensure_installed = { "biome", "prettierd", "stylua", "shfmt", "hadolint" } },
+    opts = { ensure_installed = { "biome", "prettierd", "stylua", "shfmt", "hadolint", "actionlint" } },
   },
 
   -- Linters that don't run as language servers. ESLint, Ruff and ShellCheck already come through LSP.
@@ -141,13 +126,22 @@ return {
       lint.linters_by_ft = {
         dockerfile = { "hadolint" },
       }
+      local function try_lint(buf)
+        lint.try_lint()
+        -- GitHub Actions workflows are plain YAML files, so they're matched by path instead of filetype.
+        -- actionlint also runs ShellCheck on the `run:` scripts.
+        if vim.api.nvim_buf_get_name(buf):match("/%.github/workflows/[^/]+%.ya?ml$") then
+          lint.try_lint("actionlint")
+        end
+      end
+
       vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost", "InsertLeave" }, {
         group = vim.api.nvim_create_augroup("user_lint", { clear = true }),
-        callback = function()
-          lint.try_lint()
+        callback = function(args)
+          try_lint(args.buf)
         end,
       })
-      lint.try_lint()
+      try_lint(vim.api.nvim_get_current_buf())
     end,
   },
 }

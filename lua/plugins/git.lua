@@ -42,7 +42,15 @@ return {
         end, "Blame line")
         map("n", "<leader>ghB", gs.blame, "Blame buffer")
         map("n", "<leader>ghd", gs.diffthis, "Diff against index")
-        map("n", "<leader>ub", gs.toggle_current_line_blame, "Toggle inline blame")
+        Snacks.toggle
+          .new({
+            name = "Inline blame",
+            get = function()
+              return require("gitsigns.config").config.current_line_blame
+            end,
+            set = gs.toggle_current_line_blame,
+          })
+          :map("<leader>ub", { buffer = buf })
         map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "Inside hunk")
       end,
     },

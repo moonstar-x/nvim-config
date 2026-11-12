@@ -152,6 +152,9 @@ return {
         vscode.type_to_filetypes[type] = js_filetypes
       end
 
+      -- Loading overseer hooks it into nvim-dap, so launch.json's preLaunchTask / postDebugTask work.
+      require("overseer")
+
       vim.fn.sign_define("DapBreakpoint", { text = "●", texthl = "DiagnosticError" })
       vim.fn.sign_define("DapBreakpointCondition", { text = "◆", texthl = "DiagnosticWarn" })
       vim.fn.sign_define("DapBreakpointRejected", { text = "○", texthl = "DiagnosticHint" })
@@ -187,10 +190,21 @@ return {
     opts = {},
   },
 
+  -- Python: adds the debugpy adapter and launch configurations. Programs run with the project's
+  -- virtualenv ($VIRTUAL_ENV, or venv/.venv in the working directory).
+  {
+    "mfussenegger/nvim-dap-python",
+    ft = "python",
+    dependencies = { "mfussenegger/nvim-dap" },
+    config = function()
+      require("dap-python").setup("debugpy-adapter") -- installed by Mason
+    end,
+  },
+
   {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
     opts_extend = { "ensure_installed" },
-    opts = { ensure_installed = { "js-debug-adapter" } },
+    opts = { ensure_installed = { "js-debug-adapter", "debugpy" } },
   },
 
   {

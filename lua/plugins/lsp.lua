@@ -9,6 +9,7 @@ local servers = {
   -- Web
   html = "html-lsp", -- also covers .mjml (treated as HTML)
   cssls = "css-lsp", -- CSS, SCSS, Less
+  tailwindcss = "tailwindcss-language-server", -- only starts in projects that use Tailwind
   -- Data and docs
   jsonls = "json-lsp",
   yamlls = "yaml-language-server",
@@ -93,11 +94,8 @@ return {
             Snacks.picker.diagnostics()
           end, "Diagnostics")
           map("<leader>cd", vim.diagnostic.open_float, "Line diagnostics")
-          map("<leader>uh", function()
-            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = args.buf }), { bufnr = args.buf })
-          end, "Toggle inlay hints")
 
-          -- Inlay hints on by default; which ones show is set per server in after/lsp/.
+          -- Inlay hints on by default (<leader>uh toggles); which ones show is set per server in after/lsp/.
           local client = vim.lsp.get_client_by_id(args.data.client_id)
           if client and client:supports_method("textDocument/inlayHint", args.buf) then
             vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })

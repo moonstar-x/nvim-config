@@ -2,6 +2,12 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
+-- Providers for "remote plugins" written in Python, Node, Perl or Ruby. Nothing here uses them.
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_node_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
+
 local opt = vim.opt
 
 -- Line numbers: absolute on the current line, relative everywhere else.
@@ -41,6 +47,8 @@ opt.foldtext = "" -- show the folded line itself, with its highlighting
 vim.schedule(function()
   opt.clipboard = "unnamedplus"
 end)
-opt.undofile = true -- keep undo history after closing a file
+opt.undofile = true
+-- What sessions (persistence.nvim) save. No terminals: AI CLI and shell buffers can't be restored.
+opt.sessionoptions = { "buffers", "curdir", "folds", "globals", "help", "skiprtp", "tabpages", "winsize" } -- keep undo history after closing a file
 opt.updatetime = 250 -- faster CursorHold events (used by LSP/gitsigns later)
 opt.timeoutlen = 300 -- how long to wait for a mapped key sequence

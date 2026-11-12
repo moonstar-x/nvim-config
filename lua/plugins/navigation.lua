@@ -15,6 +15,9 @@ return {
         },
       },
       statuscolumn = { enabled = true }, -- diagnostics/marks on the left, git signs and folds on the right
+      dashboard = { enabled = true }, -- start screen when Neovim opens without a file
+      words = { enabled = true }, -- highlight other uses of the symbol under the cursor; ]] / [[ jump between them
+      scope = { enabled = true }, -- ii / ai select by indent scope, [i / ]i jump to its edges
       bigfile = { enabled = true },
       quickfile = { enabled = true },
     },
@@ -126,6 +129,21 @@ return {
           Snacks.picker.colorschemes()
         end,
         desc = "Colorschemes",
+      },
+      -- References (Snacks.words)
+      {
+        "]]",
+        function()
+          Snacks.words.jump(vim.v.count1)
+        end,
+        desc = "Next reference",
+      },
+      {
+        "[[",
+        function()
+          Snacks.words.jump(-vim.v.count1)
+        end,
+        desc = "Previous reference",
       },
       -- Explorer
       {

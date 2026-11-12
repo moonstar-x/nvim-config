@@ -6,6 +6,7 @@ return {
       "nvim-lua/plenary.nvim",
       "marilari88/neotest-vitest",
       "nvim-neotest/neotest-jest",
+      "nvim-neotest/neotest-python",
     },
     opts = function()
       local lib = require("neotest.lib")
@@ -45,6 +46,8 @@ return {
         adapters = {
           only_for("vitest", require("neotest-vitest")),
           only_for("jest", require("neotest-jest")({})),
+          -- pytest if the project's Python has it, unittest otherwise. Debugging goes through nvim-dap-python.
+          require("neotest-python")({ dap = { justMyCode = false } }),
         },
         status = { virtual_text = true },
         output = { open_on_run = false },
