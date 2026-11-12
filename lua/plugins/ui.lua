@@ -45,12 +45,14 @@ return {
       spec = {},
     },
     keys = {
+      -- All keymaps. The ones that only exist in this buffer (LSP, git, ...) carry the filetype's icon.
+      -- (Showing only this buffer's keymaps left an empty popup in buffers that have none, like terminals.)
       {
         "<leader>?",
         function()
-          require("which-key").show({ global = false })
+          require("which-key").show()
         end,
-        desc = "Keymaps for this buffer",
+        desc = "Keymaps",
       },
     },
   },
